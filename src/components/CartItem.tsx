@@ -1,8 +1,18 @@
-function CartItem() {
+export interface CartItemType {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+interface CartItemProps {
+  item: CartItemType;
+}
+
+function CartItem({ item }: CartItemProps) {
   return (
     <div>
-      <span>상품 이름</span>
-      <span>10,000</span>
+      <span>{item.name}</span> - <span>{item.price}원</span> (x{item.quantity})
     </div>
   );
 }
