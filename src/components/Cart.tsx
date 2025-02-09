@@ -1,20 +1,40 @@
+import { products } from '@/data/products';
+import { type CartItemType } from '@/types/cart';
 import { useState } from 'react';
-import CartItem, { type CartItemType } from './CartItem';
-
-const INITIAL_ITEMS: CartItemType[] = [
-  { id: 1, name: '상품 A', price: 10000, quantity: 1 },
-  { id: 2, name: '상품 B', price: 20000, quantity: 1 },
-];
+import CartItem from './CartItem';
+import CartTotal from './CartTotal';
 
 function Cart() {
-  const [cartItems, setCartItems] = useState<CartItemType[]>(INITIAL_ITEMS);
+  const [cartItems, setCartItems] = useState<CartItemType[]>(products);
+
+  const updateQuantity = (id: string, count: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, quantity: count } : item
+      )
+    );
+  };
+
+  const totalPrice = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
   return (
-    <div>
-      <h2>🛒 Shopping Cart</h2>
-      {cartItems.map((item) => (
-        <CartItem key={item.id} item={item} />
-      ))}
-    </div>
+    <section className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        🛒 Shopping Cart
+      </h2>
+      <ul className="space-y-4">
+        {cartItems.map((item) => (
+          <CartItem
+            key={item.id}
+            item={item}
+            onUpdateQuantity={updateQuantity}
+          />
+        ))}
+      </ul>
+      <CartTotal total={totalPrice} />
+    </section>
   );
 }
 
