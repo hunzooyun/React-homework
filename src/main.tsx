@@ -1,7 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './tailwind.css';
-import App from '@/app';
+import './../src/character-list/index.css';
+import App from './character-list/app';
 
 const root = document.getElementById('root');
 
